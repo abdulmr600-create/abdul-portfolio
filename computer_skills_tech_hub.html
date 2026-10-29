@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechPro Hub - Skills, PC Building & Programming</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentCyan: '#06b6d4',
+                        accentBlue: '#3b82f6',
+                        accentNeon: '#22d3ee',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('pc-builder')">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-cyan-500/20">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                        TechPro Hub
+                    </span>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('pc-builder')" id="nav-pc-builder" class="nav-btn active-nav px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                        <i class="fa-solid fa-desktop mr-1.5 text-cyan-400"></i> PC Builder
+                    </button>
+                    <button onclick="switchTab('cpp-hub')" id="nav-cpp-hub" class="nav-btn default-nav px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                        <i class="fa-solid fa-code mr-1.5 text-blue-400"></i> C++ & C
+                    </button>
+                    <button onclick="switchTab('java-cs-hub')" id="nav-java-cs-hub" class="nav-btn default-nav px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                        <i class="fa-solid fa-cubes mr-1.5 text-amber-400"></i> Java & C#
+                    </button>
+                    <button onclick="switchTab('html-projects')" id="nav-html-projects" class="nav-btn default-nav px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                        <i class="fa-brands fa-html5 mr-1.5 text-orange-400"></i> HTML/CSS
+                    </button>
+                    <button onclick="switchTab('code-runner')" id="nav-code-runner" class="nav-btn default-nav px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                        <i class="fa-solid fa-terminal mr-1.5 text-emerald-400"></i> Live Playground
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchTab('pc-builder'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">
+                <i class="fa-solid fa-desktop mr-2 text-cyan-400"></i> PC Builder Simulator
+            </button>
+            <button onclick="switchTab('cpp-hub'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">
+                <i class="fa-solid fa-code mr-2 text-blue-400"></i> C / C++ Hub
+            </button>
+            <button onclick="switchTab('java-cs-hub'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">
+                <i class="fa-solid fa-cubes mr-2 text-amber-400"></i> Java & C# Hub
+            </button>
+            <button onclick="switchTab('html-projects'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">
+                <i class="fa-brands fa-html5 mr-2 text-orange-400"></i> HTML Projects & Editor
+            </button>
+            <button onclick="switchTab('code-runner'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">
+                <i class="fa-solid fa-terminal mr-2 text-emerald-400"></i> Interactive Code Runner
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+
+        <!-- ================= SECTION 1: PC BUILDING GUIDE & SIMULATOR ================= -->
+        <section id="pc-builder-section" class="tab-content space-y-8">
+            <div class="border-b border-slate-800 pb-5">
+                <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-screwdriver-wrench text-cyan-400"></i>
+                    Interactive PC Part Picker & Wattage Simulator
+                </h1>
+                <p class="mt-2 text-slate-400">
+                    Design custom desktop PC builds, automatically calculate required PSU wattage, estimate total budget, and check socket/form factor compatibility in real-time.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Part Picker Controls -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 p-6 shadow-lg">
+                        <h2 class="text-xl font-semibold text-cyan-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-list-check"></i> Select Components
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <!-- CPU -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700/40">
+                                <label class="text-slate-200 font-medium sm:w-1/3 flex items-center gap-2">
+                                    <i class="fa-solid fa-microchip text-cyan-400"></i> CPU (Processor)
+                                </label>
+                                <select id="part-cpu" onchange="calculateBuild()" class="sm:w-2/3 bg-slate-800 text-slate-100 border border-slate-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                                    <option value="intel-i5" data-price="190" data-watts="65" data-socket="LGA1700">Intel Core i5-13400F ($190, 65W, LGA1700)</option>
+                                    <option value="intel-i7" data-price="380" data-watts="125" data-socket="LGA1700">Intel Core i7-13700K ($380, 125W, LGA1700)</option>
+                                    <option value="amd-r5" data-price="220" data-watts="65" data-socket="AM5">AMD Ryzen 5 7600X ($220, 105W, AM5)</option>
+                                    <option value="amd-r7" data-price="390" data-watts="120" data-socket="AM5">AMD Ryzen 7 7800X3D ($390, 120W, AM5)</option>
+                                </select>
+                            </div>
+
+                            <!-- Motherboard -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700/40">
+                                <label class="text-slate-200 font-medium sm:w-1/3 flex items-center gap-2">
+                                    <i class="fa-solid fa-circuit-board text-indigo-400"></i> Motherboard
+                                </label>
+                                <select id="part-mobo" onchange="calculateBuild()" class="sm:w-2/3 bg-slate-800 text-slate-100 border border-slate-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                                    <option value="b660" data-price="140" data-watts="35" data-socket="LGA1700">MSI B760 Gaming Plus ($140, LGA1700)</option>
+                                    <option value="z790" data-price="250" data-watts="50" data-socket="LGA1700">ASUS ROG Strix Z790-F ($250, LGA1700)</option>
+                                    <option value="b650" data-price="180" data-watts="40" data-socket="AM5">GIGABYTE B650 AORUS Elite ($180, AM5)</option>
+                                    <option value="x670" data-price="290" data-watts="55" data-socket="AM5">ASRock X670E Steel Legend ($290, AM5)</option>
+                                </select>
+                            </div>
+
+                            <!-- GPU -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700/40">
+                                <label class="text-slate-200 font-medium sm:w-1/3 flex items-center gap-2">
+                                    <i class="fa-solid fa-display text-emerald-400"></i> Graphics Card
+                                </label>
+                                <select id="part-gpu" onchange="calculateBuild()" class="sm:w-2/3 bg-slate-800 text-slate-100 border border-slate-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                                    <option value="rtx4060" data-price="299" data-watts="115">NVIDIA RTX 4060 8GB ($299, 115W)</option>
+                                    <option value="rtx4070" data-price="549" data-watts="200">NVIDIA RTX 4070 Super 12GB ($549, 200W)</option>
+                                    <option value="rtx4080" data-price="999" data-watts="320">NVIDIA RTX 4080 Super 16GB ($999, 320W)</option>
+                                    <option value="rx7700" data-price="420" data-watts="245">AMD Radeon RX 7700 XT 12GB ($420, 245W)</option>
+                                </select>
+                            </div>
+
+                            <!-- RAM -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700/40">
+                                <label class="text-slate-200 font-medium sm:w-1/3 flex items-center gap-2">
+                                    <i class="fa-solid fa-memory text-purple-400"></i> RAM (Memory)
+                                </label>
+                                <select id="part-ram" onchange="calculateBuild()" class="sm:w-2/3 bg-slate-800 text-slate-100 border border-slate-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                                    <option value="16gb-ddr4" data-price="45" data-watts="10">16GB (2x8GB) DDR4 3200MHz ($45, 10W)</option>
+                                    <option value="32gb-ddr5" data-price="105" data-watts="15">32GB (2x16GB) DDR5 6000MHz ($105, 15W)</option>
+                                    <option value="64gb-ddr5" data-price="210" data-watts="25">64GB (2x32GB) DDR5 6000MHz ($210, 25W)</option>
+                                </select>
+                            </div>
+
+                            <!-- Storage -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700/40">
+                                <label class="text-slate-200 font-medium sm:w-1/3 flex items-center gap-2">
+                                    <i class="fa-solid fa-hard-drive text-amber-400"></i> Storage
+                                </label>
+                                <select id="part-storage" onchange="calculateBuild()" class="sm:w-2/3 bg-slate-800 text-slate-100 border border-slate-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                                    <option value="1tb-nvme" data-price="65" data-watts="7">1TB NVMe M.2 SSD PCIe 4.0 ($65, 7W)</option>
+                                    <option value="2tb-nvme" data-price="130" data-watts="9">2TB NVMe M.2 SSD PCIe 4.0 ($130, 9W)</option>
+                                    <option value="4tb-nvme" data-price="260" data-watts="12">4TB NVMe M.2 SSD High Speed ($260, 12W)</option>
+                                </select>
+                            </div>
+
+                            <!-- Power Supply -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700/40">
+                                <label class="text-slate-200 font-medium sm:w-1/3 flex items-center gap-2">
+                                    <i class="fa-solid fa-plug text-rose-400"></i> Power Supply (PSU)
+                                </label>
+                                <select id="part-psu" onchange="calculateBuild()" class="sm:w-2/3 bg-slate-800 text-slate-100 border border-slate-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                                    <option value="550w" data-price="60" data-capacity="550">550W 80+ Bronze ($60)</option>
+                                    <option value="650w" data-price="85" data-capacity="650">650W 80+ Gold ($85)</option>
+                                    <option value="750w" data-price="110" data-capacity="750">750W 80+ Gold Fully Modular ($110)</option>
+                                    <option value="850w" data-price="140" data-capacity="850">850W 80+ Gold Fully Modular ($140)</option>
+                                    <option value="1000w" data-price="190" data-capacity="1000">1000W 80+ Platinum ($190)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Build Summary & Compatibility Card -->
+                <div class="space-y-6">
+                    <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 p-6 shadow-lg sticky top-24">
+                        <h2 class="text-xl font-semibold text-cyan-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> Build Summary
+                        </h2>
+
+                        <!-- Total Cost Display -->
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700/50 mb-4 flex justify-between items-center">
+                            <span class="text-slate-400 font-medium">Estimated Price:</span>
+                            <span id="total-price" class="text-3xl font-extrabold text-emerald-400">$0</span>
+                        </div>
+
+                        <!-- Wattage Gauge Bar -->
+                        <div class="space-y-2 mb-6">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-300">Est. Power Draw: <strong id="total-watts" class="text-cyan-400">0W</strong></span>
+                                <span class="text-slate-400">PSU Limit: <span id="psu-limit" class="text-slate-200">550W</span></span>
+                            </div>
+                            <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-700">
+                                <div id="wattage-bar" class="bg-cyan-500 h-full transition-all duration-300" style="width: 20%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Compatibility Check Alert Box -->
+                        <div id="compat-box" class="p-4 rounded-lg border text-sm flex items-start gap-3 bg-emerald-950/40 border-emerald-600/50 text-emerald-300">
+                            <i id="compat-icon" class="fa-solid fa-circle-check text-xl shrink-0 mt-0.5"></i>
+                            <div>
+                                <h4 id="compat-title" class="font-bold">Socket & Power Compatible</h4>
+                                <p id="compat-desc" class="text-xs mt-1 text-slate-300">CPU socket matches motherboard and PSU capacity provides head room.</p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Guide Tips -->
+                        <div class="mt-6 pt-6 border-t border-slate-700/60">
+                            <h3 class="text-sm font-semibold text-slate-300 mb-2">Essential Assembly Steps:</h3>
+                            <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+                                <li>Install CPU & RAM onto motherboard prior to case mounting.</li>
+                                <li>Apply thermal paste if cooler base is un-applied.</li>
+                                <li>Mount motherboard with standoff screws inside PC case.</li>
+                                <li>Connect 24-pin ATX & 8-pin CPU power cables firmly.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: C++ & C PROGRAMMING HUB ================= -->
+        <section id="cpp-hub-section" class="tab-content space-y-8 hidden">
+            <div class="border-b border-slate-800 pb-5">
+                <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-code text-blue-400"></i>
+                    C & C++ Programming Tutorial Hub
+                </h1>
+                <p class="mt-2 text-slate-400">
+                    Master low-level and high-performance system programming fundamentals including pointers, memory management, and OOP.
+                </p>
+            </div>
+
+            <!-- Language Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- C Language Section -->
+                <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold text-blue-400 flex items-center gap-2">
+                                <i class="fa-solid fa-c"></i> C Language
+                            </h2>
+                            <span class="text-xs px-2.5 py-1 rounded bg-blue-900/50 border border-blue-600/40 text-blue-300 font-semibold">Procedural</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-4">
+                            The foundation of operating systems and embedded software. Known for raw memory control, speed, and standard library headers like <code>stdio.h</code>.
+                        </p>
+                        
+                        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Core Concepts & Syntax</h3>
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 text-xs code-font text-slate-200 space-y-2 overflow-x-auto">
+                            <div><span class="text-slate-500">// Standard Input/Output</span></div>
+                            <div><span class="text-cyan-400">#include</span> <span class="text-amber-300">&lt;stdio.h&gt;</span></div>
+                            <div><span class="text-blue-400">int</span> <span class="text-emerald-400">main</span>() {</div>
+                            <div class="pl-4"><span class="text-slate-500">// Pointers & Allocation</span></div>
+                            <div class="pl-4"><span class="text-blue-400">int</span> x = <span class="text-purple-400">10</span>;</div>
+                            <div class="pl-4"><span class="text-blue-400">int</span> *ptr = &amp;x; <span class="text-slate-500">// Pointer to x</span></div>
+                            <div class="pl-4"><span class="text-amber-300">printf</span>(<span class="text-green-400">"Val: %d, Addr: %p\n"</span>, *ptr, ptr);</div>
+                            <div class="pl-4"><span class="text-cyan-400">return</span> <span class="text-purple-400">0</span>;</div>
+                            <div>}</div>
+                        </div>
+                    </div>
+                    <button onclick="loadSnippetIntoPlayground('c-demo')" class="mt-6 w-full py-2.5 px-4 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg border border-blue-500/40 text-sm font-medium transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Open C Demo in Playground
+                    </button>
+                </div>
+
+                <!-- C++ Language Section -->
+                <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold text-cyan-400 flex items-center gap-2">
+                                <i class="fa-solid fa-code text-cyan-400"></i> C++ Language
+                            </h2>
+                            <span class="text-xs px-2.5 py-1 rounded bg-cyan-900/50 border border-cyan-600/40 text-cyan-300 font-semibold">OOP & Templates</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-4">
+                            Adds Object-Oriented features, classes, Standard Template Library (STL), vectors, and smart memory safety to standard C.
+                        </p>
+                        
+                        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Core Concepts & Syntax</h3>
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 text-xs code-font text-slate-200 space-y-2 overflow-x-auto">
+                            <div><span class="text-cyan-400">#include</span> <span class="text-amber-300">&lt;iostream&gt;</span></div>
+                            <div><span class="text-cyan-400">#include</span> <span class="text-amber-300">&lt;vector&gt;</span></div>
+                            <div><span class="text-blue-400">class</span> <span class="text-yellow-300">Car</span> {</div>
+                            <div><span class="text-blue-400">public:</span></div>
+                            <div class="pl-4"><span class="text-emerald-400">void</span> <span class="text-amber-300">drive</span>() { std::cout &lt;&lt; <span class="text-green-400">"Vroom!\n"</span>; }</div>
+                            <div>};</div>
+                        </div>
+                    </div>
+                    <button onclick="loadSnippetIntoPlayground('cpp-demo')" class="mt-6 w-full py-2.5 px-4 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 rounded-lg border border-cyan-500/40 text-sm font-medium transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Open C++ Demo in Playground
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: JAVA & C# PROGRAMMING HUB ================= -->
+        <section id="java-cs-hub-section" class="tab-content space-y-8 hidden">
+            <div class="border-b border-slate-800 pb-5">
+                <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-cubes text-amber-400"></i>
+                    Java & C# Enterprise Hub
+                </h1>
+                <p class="mt-2 text-slate-400">
+                    Explore cross-platform runtime environments (JVM & .NET), garbage collection, object inheritance, and application design.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Java Section -->
+                <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold text-amber-400 flex items-center gap-2">
+                                <i class="fa-brands fa-java"></i> Java
+                            </h2>
+                            <span class="text-xs px-2.5 py-1 rounded bg-amber-900/50 border border-amber-600/40 text-amber-300 font-semibold">JVM / Multi-platform</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-4">
+                            "Write once, run anywhere". Strictly Object-Oriented language powering enterprise backend apps, microservices, and Android.
+                        </p>
+                        
+                        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Class Structure Example</h3>
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 text-xs code-font text-slate-200 space-y-2 overflow-x-auto">
+                            <div><span class="text-blue-400">public class</span> <span class="text-yellow-300">Main</span> {</div>
+                            <div class="pl-4"><span class="text-blue-400">public static void</span> <span class="text-emerald-400">main</span>(String[] args) {</div>
+                            <div class="pl-8">System.out.println(<span class="text-green-400">"Hello from Java JVM!"</span>);</div>
+                            <div class="pl-4">}</div>
+                            <div>}</div>
+                        </div>
+                    </div>
+                    <button onclick="loadSnippetIntoPlayground('java-demo')" class="mt-6 w-full py-2.5 px-4 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 rounded-lg border border-amber-500/40 text-sm font-medium transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Open Java Demo in Playground
+                    </button>
+                </div>
+
+                <!-- C# Section -->
+                <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold text-purple-400 flex items-center gap-2">
+                                <i class="fa-solid fa-hashtag"></i> C# (.NET)
+                            </h2>
+                            <span class="text-xs px-2.5 py-1 rounded bg-purple-900/50 border border-purple-600/40 text-purple-300 font-semibold">Microsoft .NET</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-4">
+                            Modern language optimized for desktop software, Unity 3D game creation, and web API server architecture.
+                        </p>
+                        
+                        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Properties & LINQ Syntax</h3>
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 text-xs code-font text-slate-200 space-y-2 overflow-x-auto">
+                            <div><span class="text-cyan-400">using</span> System;</div>
+                            <div><span class="text-blue-400">class</span> <span class="text-yellow-300">Program</span> {</div>
+                            <div class="pl-4"><span class="text-blue-400">static void</span> <span class="text-emerald-400">Main</span>() {</div>
+                            <div class="pl-8">Console.WriteLine(<span class="text-green-400">"Hello from C# .NET!"</span>);</div>
+                            <div class="pl-4">}</div>
+                            <div>}</div>
+                        </div>
+                    </div>
+                    <button onclick="loadSnippetIntoPlayground('cs-demo')" class="mt-6 w-full py-2.5 px-4 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 rounded-lg border border-purple-500/40 text-sm font-medium transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Open C# Demo in Playground
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: HTML PROJECTS & LIVE EDITOR ================= -->
+        <section id="html-projects-section" class="tab-content space-y-8 hidden">
+            <div class="border-b border-slate-800 pb-5">
+                <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i class="fa-brands fa-html5 text-orange-400"></i>
+                    HTML/CSS Project Showcase & Instant Editor
+                </h1>
+                <p class="mt-2 text-slate-400">
+                    Edit web layout code directly and preview live rendered results inside the integrated iframe viewport.
+                </p>
+            </div>
+
+            <!-- HTML Editor Workspace -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Code Input Area -->
+                <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 flex flex-col overflow-hidden">
+                    <div class="bg-slate-900 px-4 py-3 border-b border-slate-700/60 flex items-center justify-between">
+                        <span class="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-code text-orange-400"></i> HTML / CSS Source
+                        </span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="loadHtmlTemplate('card')" class="text-xs px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 border border-slate-600">Profile Card</button>
+                            <button onclick="loadHtmlTemplate('button')" class="text-xs px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 border border-slate-600">Glow Button</button>
+                        </div>
+                    </div>
+                    <textarea id="html-editor-textarea" oninput="updateHtmlPreview()" class="w-full h-96 p-4 bg-slate-950 text-slate-100 code-font text-sm focus:outline-none resize-none">
+<div style="font-family: Arial, sans-serif; padding: 24px; text-align: center; background: #1e293b; color: white; border-radius: 12px; border: 1px solid #334155;">
+  <h2 style="color: #38bdf8; margin-bottom: 8px;">Developer Profile</h2>
+  <p style="color: #94a3b8; font-size: 14px;">Full Stack Software Engineer</p>
+  <button onclick="alert('Greeting from TechPro Hub!')" style="margin-top: 16px; padding: 10px 20px; background: #06b6d4; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+    Connect
+  </button>
+</div>
+                    </textarea>
+                </div>
+
+                <!-- Live Render Preview -->
+                <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 flex flex-col overflow-hidden">
+                    <div class="bg-slate-900 px-4 py-3 border-b border-slate-700/60 flex items-center justify-between">
+                        <span class="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-eye text-emerald-400"></i> Live Viewport
+                        </span>
+                        <span class="text-xs text-slate-500">Auto-updates on edit</span>
+                    </div>
+                    <iframe id="html-preview-frame" class="w-full h-96 bg-white rounded-b-xl border-none"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: INTERACTIVE PLAYGROUND / CODE RUNNER ================= -->
+        <section id="code-runner-section" class="tab-content space-y-8 hidden">
+            <div class="border-b border-slate-800 pb-5">
+                <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-terminal text-emerald-400"></i>
+                    Interactive Code Runner & Logic Simulator
+                </h1>
+                <p class="mt-2 text-slate-400">
+                    Execute standard logic routines (C, C++, Java, C#) using JavaScript simulation engine.
+                </p>
+            </div>
+
+            <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 p-6 space-y-6">
+                <!-- Select Language Preset -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <label class="text-sm font-semibold text-slate-300">Preset Language:</label>
+                        <select id="playground-lang-select" onchange="changePlaygroundLanguage()" class="bg-slate-900 text-slate-100 border border-slate-700 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                            <option value="cpp-demo">C++ (Class & Loop)</option>
+                            <option value="c-demo">C (Pointers & Array)</option>
+                            <option value="java-demo">Java (Class Methods)</option>
+                            <option value="cs-demo">C# (Data Collections)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="runSimulatedCode()" class="w-full sm:w-auto px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-lg shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Run Code
+                    </button>
+                </div>
+
+                <!-- Code Editor Textarea -->
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Source Code Editor</label>
+                    <textarea id="playground-editor" class="w-full h-64 p-4 bg-slate-950 text-slate-100 code-font text-sm border border-slate-800 rounded-lg focus:outline-none focus:ring-1 focus:ring-cyan-500 resize-none" spellcheck="false"></textarea>
+                </div>
+
+                <!-- Simulated Output Terminal -->
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-square-poll-vertical text-emerald-400"></i> Terminal Output
+                    </label>
+                    <div id="terminal-output" class="w-full h-36 p-4 bg-slate-950 text-emerald-400 code-font text-xs border border-slate-800 rounded-lg overflow-y-auto whitespace-pre-wrap">
+Ready to run. Click 'Run Code' to execute simulator.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 border-t border-slate-800 mt-12 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 TechPro Hub. Built for learning PC assembly, C, C++, Java, C#, and HTML development.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Pre-loaded Code Snippets
+        const snippets = {
+            'c-demo': `#include <stdio.h>
+
+int main() {
+    int numbers[3] = {10, 20, 30};
+    printf("C Pointer & Array Logic:\n");
+    for(int i = 0; i < 3; i++) {
+        printf("Element %d = %d\n", i, numbers[i]);
+    }
+    return 0;
+}`,
+            'cpp-demo': `#include <iostream>
+using namespace std;
+
+class Computer {
+public:
+    string brand = "Custom Build";
+    void powerOn() {
+        cout << "System " << brand << " Booting Up..." << endl;
+    }
+};
+
+int main() {
+    Computer myPC;
+    myPC.powerOn();
+    return 0;
+}`,
+            'java-demo': `public class Main {
+    public static void main(String[] args) {
+        String[] languages = {"Java", "C++", "C#"};
+        System.out.println("Executing JVM Stack:");
+        for(String lang : languages) {
+            System.out.println("Loaded: " + lang);
+        }
+    }
+}`,
+            'cs-demo': `using System;
+
+class Program {
+    static void Main() {
+        Console.WriteLine("C# .NET Engine Active");
+        int memoryMB = 16384;
+        Console.WriteLine($"Allocated Memory: {memoryMB / 1024} GB");
+    }
+}`
+        };
+
+        // Navigation Tab Switcher
+        function switchTab(tabId) {
+            // Hide all tab content sections
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(el => el.classList.add('hidden'));
+
+            // Show selected section
+            const target = document.getElementById(tabId + '-section');
+            if (target) target.classList.remove('hidden');
+
+            // Update tab button active states
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-cyan-400', 'border-b-2', 'border-cyan-400');
+                btn.classList.add('text-slate-300');
+            });
+
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-slate-800', 'text-cyan-400');
+            }
+
+            // Refresh HTML editor preview if switching to HTML tab
+            if (tabId === 'html-projects') {
+                updateHtmlPreview();
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // PC Builder Calculation Engine
+        function calculateBuild() {
+            const cpuSelect = document.getElementById('part-cpu');
+            const moboSelect = document.getElementById('part-mobo');
+            const gpuSelect = document.getElementById('part-gpu');
+            const ramSelect = document.getElementById('part-ram');
+            const storageSelect = document.getElementById('part-storage');
+            const psuSelect = document.getElementById('part-psu');
+
+            // Calculate total cost
+            const totalPrice = 
+                parseInt(cpuSelect.options[cpuSelect.selectedIndex].dataset.price || 0) +
+                parseInt(moboSelect.options[moboSelect.selectedIndex].dataset.price || 0) +
+                parseInt(gpuSelect.options[gpuSelect.selectedIndex].dataset.price || 0) +
+                parseInt(ramSelect.options[ramSelect.selectedIndex].dataset.price || 0) +
+                parseInt(storageSelect.options[storageSelect.selectedIndex].dataset.price || 0) +
+                parseInt(psuSelect.options[psuSelect.selectedIndex].dataset.price || 0);
+
+            // Calculate total estimated wattage
+            const totalWatts = 
+                parseInt(cpuSelect.options[cpuSelect.selectedIndex].dataset.watts || 0) +
+                parseInt(moboSelect.options[moboSelect.selectedIndex].dataset.watts || 0) +
+                parseInt(gpuSelect.options[gpuSelect.selectedIndex].dataset.watts || 0) +
+                parseInt(ramSelect.options[ramSelect.selectedIndex].dataset.watts || 0) +
+                parseInt(storageSelect.options[storageSelect.selectedIndex].dataset.watts || 0);
+
+            const psuCapacity = parseInt(psuSelect.options[psuSelect.selectedIndex].dataset.capacity || 550);
+
+            // Update UI Labels
+            document.getElementById('total-price').innerText = '$' + totalPrice;
+            document.getElementById('total-watts').innerText = totalWatts + 'W';
+            document.getElementById('psu-limit').innerText = psuCapacity + 'W';
+
+            // Update Wattage Bar Percentage
+            const psuPercent = Math.min(Math.round((totalWatts / psuCapacity) * 100), 100);
+            const wattageBar = document.getElementById('wattage-bar');
+            wattageBar.style.width = psuPercent + '%';
+
+            if (psuPercent > 85) {
+                wattageBar.className = 'bg-rose-500 h-full transition-all duration-300';
+            } else if (psuPercent > 70) {
+                wattageBar.className = 'bg-amber-500 h-full transition-all duration-300';
+            } else {
+                wattageBar.className = 'bg-cyan-500 h-full transition-all duration-300';
+            }
+
+            // Compatibility Check Rules
+            const cpuSocket = cpuSelect.options[cpuSelect.selectedIndex].dataset.socket;
+            const moboSocket = moboSelect.options[moboSelect.selectedIndex].dataset.socket;
+            const compatBox = document.getElementById('compat-box');
+            const compatTitle = document.getElementById('compat-title');
+            const compatDesc = document.getElementById('compat-desc');
+            const compatIcon = document.getElementById('compat-icon');
+
+            if (cpuSocket !== moboSocket) {
+                // Socket Mismatch Alert
+                compatBox.className = 'p-4 rounded-lg border text-sm flex items-start gap-3 bg-rose-950/40 border-rose-600/50 text-rose-300';
+                compatIcon.className = 'fa-solid fa-triangle-exclamation text-xl shrink-0 mt-0.5 text-rose-400';
+                compatTitle.innerText = 'Incompatible Socket!';
+                compatDesc.innerText = `CPU uses ${cpuSocket} socket but Motherboard uses ${moboSocket}. Choose matching parts.`;
+            } else if (totalWatts > psuCapacity) {
+                // Power Overload Alert
+                compatBox.className = 'p-4 rounded-lg border text-sm flex items-start gap-3 bg-rose-950/40 border-rose-600/50 text-rose-300';
+                compatIcon.className = 'fa-solid fa-bolt text-xl shrink-0 mt-0.5 text-rose-400';
+                compatTitle.innerText = 'Power Overload Alert!';
+                compatDesc.innerText = `Components require ${totalWatts}W which exceeds PSU capacity of ${psuCapacity}W.`;
+            } else {
+                // All clear
+                compatBox.className = 'p-4 rounded-lg border text-sm flex items-start gap-3 bg-emerald-950/40 border-emerald-600/50 text-emerald-300';
+                compatIcon.className = 'fa-solid fa-circle-check text-xl shrink-0 mt-0.5 text-emerald-400';
+                compatTitle.innerText = 'Socket & Power Compatible';
+                compatDesc.innerText = `CPU socket (${cpuSocket}) matches motherboard. PSU headroom is adequate.`;
+            }
+        }
+
+        // HTML Live Editor Preview Handler
+        function updateHtmlPreview() {
+            const code = document.getElementById('html-editor-textarea').value;
+            const iframe = document.getElementById('html-preview-frame');
+            const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
+            frameDoc.open();
+            frameDoc.write(code);
+            frameDoc.close();
+        }
+
+        function loadHtmlTemplate(type) {
+            const textarea = document.getElementById('html-editor-textarea');
+            if (type === 'card') {
+                textarea.value = `<div style="font-family: Arial, sans-serif; padding: 24px; text-align: center; background: #1e293b; color: white; border-radius: 12px; border: 1px solid #334155;">
+  <h2 style="color: #38bdf8; margin-bottom: 8px;">Developer Profile</h2>
+  <p style="color: #94a3b8; font-size: 14px;">Full Stack Software Engineer</p>
+  <button onclick="alert('Greeting from TechPro Hub!')" style="margin-top: 16px; padding: 10px 20px; background: #06b6d4; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+    Connect
+  </button>
+</div>`;
+            } else if (type === 'button') {
+                textarea.value = `<div style="padding: 40px; text-align: center; background: #0f172a; height: 100vh;">
+  <button style="padding: 14px 28px; background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; font-weight: bold; border: none; border-radius: 8px; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4); cursor: pointer; transition: transform 0.2s;">
+    Glow Action Button
+  </button>
+</div>`;
+            }
+            updateHtmlPreview();
+        }
+
+        // Code Playground Handlers
+        function changePlaygroundLanguage() {
+            const key = document.getElementById('playground-lang-select').value;
+            document.getElementById('playground-editor').value = snippets[key] || '';
+        }
+
+        function loadSnippetIntoPlayground(snippetKey) {
+            switchTab('code-runner');
+            const select = document.getElementById('playground-lang-select');
+            select.value = snippetKey;
+            changePlaygroundLanguage();
+        }
+
+        function runSimulatedCode() {
+            const terminal = document.getElementById('terminal-output');
+            const code = document.getElementById('playground-editor').value;
+            const currentLang = document.getElementById('playground-lang-select').value;
+
+            terminal.innerText = "Compiling & executing program...\n";
+
+            setTimeout(() => {
+                let simulatedResult = "";
+                if (currentLang === 'c-demo') {
+                    simulatedResult = "C Pointer & Array Logic:\nElement 0 = 10\nElement 1 = 20\nElement 2 = 30\n\nProcess finished with exit code 0";
+                } else if (currentLang === 'cpp-demo') {
+                    simulatedResult = "System Custom Build Booting Up...\n\nProcess finished with exit code 0";
+                } else if (currentLang === 'java-demo') {
+                    simulatedResult = "Executing JVM Stack:\nLoaded: Java\nLoaded: C++\nLoaded: C#\n\nTask finished successfully.";
+                } else if (currentLang === 'cs-demo') {
+                    simulatedResult = "C# .NET Engine Active\nAllocated Memory: 16 GB\n\nExecution completed.";
+                } else {
+                    simulatedResult = "Program executed successfully.\nOutput log generated.";
+                }
+                terminal.innerText = simulatedResult;
+            }, 500);
+        }
+
+        // Initialize default view on page load
+        window.onload = function() {
+            calculateBuild();
+            changePlaygroundLanguage();
+            updateHtmlPreview();
+        };
+    </script>
+</body>
+</html>
